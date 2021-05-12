@@ -1,5 +1,5 @@
 package com.moviereview.userinterface;
 
 public enum Genre {
-    Action, Comedy, Drama, Superhero
+    All, Action, Comedy, Drama, Superhero
 }

@@ -33,6 +33,8 @@ import com.moviereview.userinterface.App.Views;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 
 public class NavBar {
@@ -41,12 +43,21 @@ public class NavBar {
     private static NavBar navbarInstance = null;
     private static JPanel navBarPanel = null;
     private static boolean loggedIn = false;        //Boolean for managing logged-in state
-    private JTextField srchField;
+    public static boolean hasSearched = false;     //Boolean for checking if user has searched
+    private static JTextField srchField;
+    private static JButton homeBtn;
 
     private NavBar()
     {
         //Initialize widgets
         createWidgets();
+    }
+
+    //Should be done with events?
+    public static void resetSearchText()
+    {
+        srchField.setText("");
+        hasSearched = false;
     }
 
     public static NavBar getInstance()
@@ -68,7 +79,7 @@ public class NavBar {
         JPanel hBtnWrapper = new JPanel();
         BufferedImage hIcon;
         
-        JButton homeBtn = new JButton();
+        homeBtn = new JButton();
         //homeBtn.setBorderPainted(false);
         homeBtn.setFocusPainted(false);
         homeBtn.setContentAreaFilled(false);
@@ -79,6 +90,60 @@ public class NavBar {
         } catch (NullPointerException | IllegalArgumentException e) {
             System.out.println("Couldn't read image");
         }
+
+        homeBtn.addMouseListener(new MouseListener()
+        {
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+                try {
+                    final URL url = Thread.currentThread().getContextClassLoader().getResource("images/clickedHomeIcon.png");
+                    ImageIcon ico = new ImageIcon(Toolkit.getDefaultToolkit().getImage(url));
+                    NavBar.homeBtn.setIcon(ico);
+                } catch (NullPointerException er) {
+                    System.out.println("Couldn't read image");
+                }
+				
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+                try
+                {
+                    final URL url = Thread.currentThread().getContextClassLoader().getResource("images/homeIcon.png");
+                    ImageIcon ico = new ImageIcon(Toolkit.getDefaultToolkit().getImage(url));
+                    NavBar.homeBtn.setIcon(ico);
+                    resetSearchText();
+                    App.resetMovieList();
+                    App.filterOp.resetOptions();
+                    App.switchContentPanels(Views.Home);
+                }
+                catch(NullPointerException er)
+                {
+
+                }
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+            
+        });
 
         homeBtn.setMaximumSize(new Dimension(64, 64));
         homeBtn.setPreferredSize(new Dimension(64, 64));
@@ -99,6 +164,20 @@ public class NavBar {
         
         JLabel sText = new JLabel("HAKU");
         srchField = new JTextField(20);
+        srchField.setOpaque(false);
+
+        JLabel srchWrapper = new JLabel( new ImageIcon());
+        srchWrapper.setLayout(new BorderLayout());
+        srchWrapper.add(srchField);
+        //Add Magnifying glass icon to the search field
+        try {
+            final URL url = Thread.currentThread().getContextClassLoader().getResource("images/magnGlassIcon.png");
+            ImageIcon ico = new ImageIcon(Toolkit.getDefaultToolkit().getImage(url));
+            srchWrapper.setIcon(ico);
+        } catch (NullPointerException | IllegalArgumentException e) {
+            System.out.println("Couldn't read image");
+        }
+
         JButton sBtn = new JButton();
         
         //Search styling
@@ -119,7 +198,7 @@ public class NavBar {
         layoutC.fill = GridBagConstraints.HORIZONTAL;
         layoutC.gridx = 0;
         layoutC.gridy = 1;
-        searchContainer.add(srchField, layoutC);
+        searchContainer.add(srchWrapper, layoutC);
 
         layoutC.weightx = 0;
         layoutC.fill = GridBagConstraints.HORIZONTAL;
@@ -130,16 +209,11 @@ public class NavBar {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                List<Movie> newList = new ArrayList<Movie>();
-                for(int i = 0; i < App.movieList.size(); i++)
-                {
-                    if(App.movieList.get(i).getTitle().toLowerCase().contains(srchField.getText()))
-                    {
-                        newList.add(App.movieList.get(i));
-                    }
-                }
-                App.curMovieList = newList;
-                App.switchContentPanels(Views.Home);
+                String text = srchField.getText();
+                if(text.isBlank() || text.isEmpty())
+                    text = "NULL";
+                hasSearched = true;
+                App.filterOp.filterTitle(text);
             }
         });
         //Login button

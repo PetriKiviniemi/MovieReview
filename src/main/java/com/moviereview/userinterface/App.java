@@ -39,7 +39,8 @@ public class App
     public static List<Movie> curMovieList = new ArrayList<Movie>();  //List of currently displayed series
     public static Movie movieToReview;      //Currently selected movie
     private static JPanel contentView = new JPanel();
-    
+    public static FilterOptions filterOp;
+
     //Homescreen
     public static HomeScreen home = new HomeScreen();
 
@@ -76,7 +77,8 @@ public class App
         
         NavBar navBar = NavBar.getInstance();
         SideBar sideBar = SideBar.getInstance();
-
+        filterOp = new FilterOptions();
+        
         //Initialize the different content views
                 //Add some temporary movies
         movieList.add(new Movie("Spiderman", "Otus joka heittaa seittia", 2004, Genre.Superhero));
