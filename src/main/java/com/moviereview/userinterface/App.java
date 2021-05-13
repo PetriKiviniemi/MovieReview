@@ -81,9 +81,9 @@ public class App
         
         //Initialize the different content views
                 //Add some temporary movies
-        movieList.add(new Movie("Spiderman", "Otus joka heittaa seittia", 2004, Genre.Superhero));
-        movieList.add(new Movie("Batman", "Öinen ritari", 1995, Genre.Superhero));
-        movieList.add(new Movie("The Office", "Kuivaa huumoria sisältävä sarja", 2005, Genre.Comedy));
+        movieList.add(new Movie("Spiderman", "Photographer starts selling his own pictures.", 2004, Genre.Superhero));
+        movieList.add(new Movie("Batman", "Rich man dresses up in latex to beat up criminals.", 1995, Genre.Superhero));
+        movieList.add(new Movie("The Office", "Fictional documentary about working at an office.", 2005, Genre.Comedy));
         resetMovieList();
 
         switchContentPanels(Views.Home);
@@ -97,8 +97,5 @@ public class App
         f.pack();
         f.setSize(1024, 720);
         f.setVisible(true);
-        
-
-        System.out.println( "Hello World!" );
     }
 }
