@@ -162,7 +162,7 @@ public class NavBar {
         searchContainer.setBorder(BorderFactory.createEmptyBorder(15, 20, 25, 0));       //Set component margin with empty border
         searchContainer.setMaximumSize(new Dimension(200, 200));
         
-        JLabel sText = new JLabel("HAKU");
+        JLabel sText = new JLabel("Search for content");
         srchField = new JTextField(20);
         srchField.setOpaque(false);
 
@@ -184,7 +184,7 @@ public class NavBar {
         sText.setFont(new Font("SansSerif", Font.PLAIN, 24));
         srchField.setFont(new Font("SansSerif", Font.PLAIN, 18));
         srchField.setMinimumSize(new Dimension(200, 25));
-        sBtn.setText("Hae");
+        sBtn.setText("Search");
         
         //Add contents to search container
         layoutC.weightx = 0;
