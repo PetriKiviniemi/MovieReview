@@ -8,13 +8,15 @@ public class Movie {
     private String description;
     private int year;
     private Genre genre;
+    private int score;
 
-    public Movie(String title, String desc, int year, Genre genre)
+    public Movie(String title, String desc, int year, Genre genre, int score)
     {
         this.title = title;
         this.description = desc;
         this.year = year;
         this.genre = genre;
+        this.score = score;
     }
 
     public String getTitle()
@@ -35,5 +37,15 @@ public class Movie {
     public Genre getGenre()
     {
         return this.genre;
+    }
+
+    public int getScore()
+    {
+        return this.score;
+    }
+
+    public void setScore(int score)
+    {
+        this.score = score;
     }
 }

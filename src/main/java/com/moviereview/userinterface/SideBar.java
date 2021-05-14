@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.BorderLayout;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -29,10 +30,14 @@ public class SideBar {
     private static JComboBox genreBox;
     private static JComboBox dateFromBox;
     private static JComboBox dateToBox;
+    private static JComboBox scoreFromBox;
+    private static JComboBox scoreToBox;
     //Store the filter options for comparing if they have changed
     public static Genre curGenre;
-    public static int curFrom;
-    public static int curTo;
+    public static int curYearFrom;
+    public static int curYearTo;
+    public static int curScoreFrom;
+    public static int curScoreTo;
     
     //Singleton, we only want one of these ever.
     private SideBar()
@@ -85,7 +90,11 @@ public class SideBar {
                 if(dateFromBox != null)
                     dateFromBox.setSelectedItem(dateFromBox.getItemAt(0));
                 if(dateToBox != null)
-                    dateToBox.setSelectedItem(dateToBox.getItemAt(dateToBox.getItemCount()-1));   
+                    dateToBox.setSelectedItem(dateToBox.getItemAt(dateToBox.getItemCount()-1));
+                if(scoreFromBox != null)
+                    scoreFromBox.setSelectedItem(scoreFromBox.getItemAt(0));
+                if(scoreToBox != null)
+                    scoreToBox.setSelectedItem(scoreToBox.getItemAt(scoreToBox.getItemCount()-1));
             }
             
         });
@@ -124,15 +133,16 @@ public class SideBar {
 
         //Year
         JPanel yearContainer = new JPanel();
+        yearContainer.setLayout(new BorderLayout());
         yearContainer.setPreferredSize(new Dimension(sideBarPanel.getWidth(), 200));
 
         JLabel yText = new JLabel("Year");
         yText.setVerticalAlignment(JLabel.CENTER);
         yText.setHorizontalAlignment(JLabel.CENTER);
+
         yText.setFont(new Font("SansSerif", Font.PLAIN, 24));
 
         JPanel datesContainer = new JPanel();
-        //datesContainer.setPreferredSize(new Dimension(yearContainer.getWidth(), 200));
         
         List<String> dates = new ArrayList<String>();
         Integer year;
@@ -146,8 +156,8 @@ public class SideBar {
         dateToBox.setFont(new Font("SansSerif", Font.PLAIN, 18));
         dateFromBox.setSelectedItem(dateFromBox.getItemAt(0));
         dateToBox.setSelectedItem(dateToBox.getItemAt(dateToBox.getItemCount()-1));
-        curFrom = Integer.parseInt(dateFromBox.getItemAt(0).toString());
-        curTo = Integer.parseInt(dateToBox.getItemAt(dateToBox.getItemCount()-1).toString());
+        curYearFrom = Integer.parseInt(dateFromBox.getItemAt(0).toString());
+        curYearTo = Integer.parseInt(dateToBox.getItemAt(dateToBox.getItemCount()-1).toString());
         
         dateFromBox.addItemListener(new ItemListener()
         {
@@ -155,10 +165,10 @@ public class SideBar {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 int newYear = Integer.parseInt(e.getItem().toString());
-                if(newYear != curFrom)
+                if(newYear != curYearFrom)
                 {
-                    App.filterOp.filterYear(newYear, curTo);
-                    curFrom = newYear;
+                    App.filterOp.filterYear(newYear, curYearTo);
+                    curYearFrom = newYear;
                 }
                 
             }
@@ -171,10 +181,10 @@ public class SideBar {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 int newYear = Integer.parseInt(e.getItem().toString());
-                if(newYear != curTo)
+                if(newYear != curYearTo)
                 {
-                    App.filterOp.filterYear(curFrom, newYear);
-                    curTo = newYear;
+                    App.filterOp.filterYear(curYearFrom, newYear);
+                    curYearTo = newYear;
                 }
                 
             }
@@ -183,13 +193,83 @@ public class SideBar {
 
         datesContainer.add(dateFromBox);
         datesContainer.add(dateToBox);
-        yearContainer.add(yText);
-        yearContainer.add(datesContainer);
+        yearContainer.add(yText, BorderLayout.NORTH);
+        yearContainer.add(datesContainer, BorderLayout.CENTER);
+
+        //Filter for review scores
+        JPanel reviewScoreContainer = new JPanel();
+        reviewScoreContainer.setLayout(new BorderLayout());
+        reviewScoreContainer.setPreferredSize(new Dimension(sideBarPanel.getWidth(), 200));
+
+        JLabel scoreText = new JLabel("Score");;
+        scoreText.setFont(new Font("SansSerif", Font.PLAIN, 24));
+        scoreText.setVerticalAlignment(JLabel.CENTER);
+        scoreText.setHorizontalAlignment(JLabel.CENTER);
+
+        JPanel scoresContainer = new JPanel();
+
+        List<String> scores = new ArrayList<String>();
+        Integer score;
+        for(score = 1; score <= 10; score++)
+        {
+            scores.add(score.toString());
+        }
+        scoreFromBox = new JComboBox(scores.toArray());
+        scoreToBox = new JComboBox(scores.toArray());
+
+        scoreFromBox.setFont(new Font("SansSerif", Font.PLAIN, 18));
+        scoreToBox.setFont(new Font("SansSerif", Font.PLAIN, 18));
+        
+        scoreFromBox.setSelectedItem(scoreFromBox.getItemAt(0));
+        scoreToBox.setSelectedItem(scoreToBox.getItemAt(scoreToBox.getItemCount()-1));
+        
+        curScoreFrom = Integer.parseInt(scoreFromBox.getItemAt(0).toString());
+        curScoreTo = Integer.parseInt(scoreToBox.getItemAt(scoreToBox.getItemCount()-1).toString());
+        
+        scoreFromBox.addItemListener(new ItemListener()
+        {
+
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                int newScore = Integer.parseInt(e.getItem().toString());
+                if(newScore != curScoreFrom)
+                {
+                    App.filterOp.filterScore(newScore, curScoreTo);
+                    curScoreFrom = newScore;
+                }
+                
+            }
+            
+        });
+ 
+        scoreToBox.addItemListener(new ItemListener()
+        {
+
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                int newScore = Integer.parseInt(e.getItem().toString());
+                if(newScore != curScoreTo)
+                {
+                    App.filterOp.filterScore(curScoreFrom, newScore);
+                    curScoreTo = newScore;
+                }
+                
+            }
+            
+        });
+
+        scoresContainer.add(scoreFromBox);
+        scoresContainer.add(scoreToBox);
+        reviewScoreContainer.add(scoreText, BorderLayout.NORTH);
+        reviewScoreContainer.add(scoresContainer, BorderLayout.CENTER);
 
         sideBarPanel.add(filterContainer);
         sideBarPanel.add(genreContainer);
+        sideBarPanel.add(Box.createRigidArea(new Dimension(0, 50)));
         sideBarPanel.add(yearContainer);
-        sideBarPanel.add(Box.createRigidArea(new Dimension(0, 200)));
+        sideBarPanel.add(Box.createRigidArea(new Dimension(0, 40)));
+        sideBarPanel.add(reviewScoreContainer);
+        sideBarPanel.add(Box.createRigidArea(new Dimension(0, 50)));
 
     }
 
