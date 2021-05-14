@@ -55,7 +55,6 @@ public class App
     {
         if(f != null && f.getWidth() != 0)
         {
-            System.out.println(new Dimension(f.getWidth() - SideBar.getInstance().getContent().getWidth()-104, f.getHeight() - NavBar.getInstance().getContent().getHeight()-53));
             return new Dimension(f.getWidth() - SideBar.getInstance().getContent().getWidth(), f.getHeight() - NavBar.getInstance().getContent().getHeight());
         }
         else
