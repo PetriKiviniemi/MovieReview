@@ -22,7 +22,9 @@ public class MovieDetails {
     private JPanel leftPanel = new JPanel();
     private JPanel rightPanel = new JPanel();
     private JPanel poster = new JPanel();
+    private JPanel firstReview = new JPanel();
     private JPanel leftBottomPanel = new JPanel();
+    private JPanel rightBottomPanel = new JPanel();
     private Movie movie;        //Currently selected movie
 
     //UI gaps
@@ -47,6 +49,11 @@ public class MovieDetails {
         JButton viewReviews = new JButton();
         viewReviews.setText("More reviews");
 
+        //Set up labels
+        JLabel reviews = new JLabel();
+        reviews.setText("Reviews:");
+
+
         //Set up listener
         back.addActionListener(new ActionListener()
         {
@@ -62,10 +69,16 @@ public class MovieDetails {
         rightPanel.setLayout(new BorderLayout(hGap, vGap));
         poster.setLayout(new BorderLayout(hGap, vGap));
         leftBottomPanel.setLayout(new BorderLayout(hGap, vGap));
+        rightBottomPanel.setLayout(new BorderLayout(hGap, vGap));
 
         poster.setMinimumSize(new Dimension(150, 200));
         poster.setPreferredSize(new Dimension(150, 200));
         poster.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
+        //Add an example review
+        firstReview.setMinimumSize(new Dimension(550, 200));
+        firstReview.setPreferredSize(new Dimension(550, 200));
+        firstReview.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         leftPanel.add(back, BorderLayout.PAGE_START);
 
@@ -78,24 +91,35 @@ public class MovieDetails {
             year.setText("(" + Integer.toString(movie.getYear())+ ")");
             JLabel summary = new JLabel();
             summary.setText("Summary: " + movie.getDesc());
+            JLabel writer = new JLabel();
+            writer.setText("User123's review of " + movie.getTitle());
+            JLabel exampleReview = new JLabel();
+            exampleReview.setText("I like this because it's " + movie.getDesc());
             JLabel avgRating = new JLabel();
-            avgRating.setText("Average rating: X.X");
-            JLabel reviews = new JLabel();
-            reviews.setText("Reviews");
+            avgRating.setText("Average rating: " + movie.getScore());
     
             poster.add(title, BorderLayout.PAGE_START);
             poster.add(year, BorderLayout.PAGE_END);
             rightPanel.add(summary, BorderLayout.PAGE_START);
             rightPanel.add(avgRating, BorderLayout.CENTER);
-            rightPanel.add(reviews, BorderLayout.PAGE_END);
+            firstReview.add(writer, BorderLayout.PAGE_START);
+            firstReview.add(exampleReview, BorderLayout.CENTER);
         }
+
+
+        //Add non-movie specific content to panels
+        leftPanel.add(poster, BorderLayout.CENTER);
+        leftPanel.add(leftBottomPanel, BorderLayout.PAGE_END);
+
+        rightPanel.add(rightBottomPanel, BorderLayout.PAGE_END);
 
         leftBottomPanel.add(favorite, BorderLayout.PAGE_START);
         leftBottomPanel.add(review, BorderLayout.PAGE_END);
 
-        leftPanel.add(poster, BorderLayout.CENTER);
-        leftPanel.add(leftBottomPanel, BorderLayout.PAGE_END);
-        rightPanel.add(viewReviews, BorderLayout.PAGE_END);
+        rightBottomPanel.add(reviews, BorderLayout.PAGE_START);
+        rightBottomPanel.add(firstReview, BorderLayout.CENTER);
+        rightBottomPanel.add(viewReviews, BorderLayout.PAGE_END);
+
         movieViewPanel.add(leftPanel, BorderLayout.LINE_START);
         movieViewPanel.add(rightPanel, BorderLayout.LINE_END);
     }
