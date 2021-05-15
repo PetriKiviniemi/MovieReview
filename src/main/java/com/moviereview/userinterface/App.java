@@ -78,7 +78,7 @@ public class App
         filterOp = new FilterOptions();
         
         //Add some temporary movies
-        movieList.add(new Movie("Spiderman", "Photographer starts selling his own pictures.", 2004, Genre.Superhero, 7));
+        movieList.add(new Movie("Spiderman", "Man gets superpowers and starts selling pictures of himself.", 2004, Genre.Superhero, 7));
         movieList.add(new Movie("Batman", "Rich man dresses up in latex to beat up criminals.", 1995, Genre.Superhero, 8));
         movieList.add(new Movie("The Office", "Fictional documentary about working at an office.", 2005, Genre.Comedy, 10));
         resetMovieList();
